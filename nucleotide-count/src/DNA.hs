@@ -1,17 +1,16 @@
 module DNA (nucleotideCounts, Nucleotide (..)) where
 
-import qualified Data.Map as Map
+import Data.Map (Map)
+import qualified Data.Map as M
 
-data Nucleotide = A | C | G | T deriving (Eq, Ord, Show)
+data Nucleotide = A | C | G | T deriving (Eq, Ord, Show, Read)
 
-nucleotideCounts :: String -> Either String (Map.Map Nucleotide Int)
-nucleotideCounts str = go str (Map.fromList [(A, 0), (C, 0), (G, 0), (T, 0)])
+nucleotideCounts :: String -> Either String (Map Nucleotide Int)
+nucleotideCounts str
+  | isValid = Right $ count str
+  | otherwise = Left "invalid"
   where
-    go :: String -> Map.Map Nucleotide Int -> Either String (Map.Map Nucleotide Int)
-    go (x : xs) m
-      | x == 'A' = go xs (Map.adjust succ A m)
-      | x == 'C' = go xs (Map.adjust succ C m)
-      | x == 'G' = go xs (Map.adjust succ G m)
-      | x == 'T' = go xs (Map.adjust succ T m)
-      | otherwise = Left "invalid"
-    go [] m = Right m
+    isValid = all (`elem` "ACGT") str
+
+count :: String -> Map Nucleotide Int
+count str = M.fromListWith (+) [(read [c], 1) | c <- str]
