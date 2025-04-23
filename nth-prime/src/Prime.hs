@@ -7,7 +7,7 @@ nth n
   where
     allNumbers = [1 ..]
     primes = filter isPrime allNumbers
-    res = drop (n - 1) primes !! (n - 1)
+    res = primes !! (n - 1)
 
 isPrime :: Integer -> Bool
 isPrime x
