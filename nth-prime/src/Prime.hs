@@ -13,7 +13,7 @@ isPrime :: Integer -> Bool
 isPrime x
   | x <= 1 = False
   | x == 2 = True
-  | otherwise = not $ any (\c -> x `mod` c == 0) [2 .. sqrt' x]
+  | otherwise = all (\c -> x `mod` c /= 0) [2 .. sqrt' x]
 
 sqrt' :: (Integral a) => a -> a
 sqrt' x = floor (sqrt (fromIntegral x) :: Double)
